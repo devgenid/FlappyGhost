@@ -11,6 +11,9 @@ public class GhostControl : MonoBehaviour
 
     float angle=0;
 
+    public ScoreControl score;
+    public GameManager gameManager;
+    bool touchedGround;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +23,7 @@ public class GhostControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)) //0 the left button
+        if(Input.GetMouseButtonDown(0) && !GameManager.gameOver) //0 the left button
         {
             rb.velocity = Vector2.zero; //disable gravity
             rb.velocity = new Vector2(rb.velocity.x, speed); //only move up/down
@@ -45,6 +48,39 @@ public class GhostControl : MonoBehaviour
             }
         }
 
-        transform.rotation = Quaternion.Euler(0,0,angle);
+        if(!touchedGround)
+        {
+            transform.rotation = Quaternion.Euler(0,0,angle);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision) 
+    {
+        if(collision.CompareTag("Arms"))
+        {
+            score.Scored();
+        }
+        else if(collision.CompareTag("SingleArm"))
+        {
+            gameManager.GameOver();
+
+        }
+
+    }
+    private void OnCollisionEnter2D(Collision2D collision) 
+    {
+        if(collision.gameObject.CompareTag("Ground"))
+        {
+            if(!GameManager.gameOver)
+            {
+                gameManager.GameOver();
+            }
+            else
+            {
+                touchedGround = true;
+            }
+
+        }
+
     }
 }
