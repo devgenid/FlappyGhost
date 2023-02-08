@@ -21,6 +21,8 @@ public class GhostControl : MonoBehaviour
 
     public ArmSpawner armSpawner;
 
+    public Animator ghostAnimator, getReadyAnimator;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,14 +35,14 @@ public class GhostControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && !GameManager.gameOver) //0 the left button
+        if(Input.GetMouseButtonDown(0) && !GameManager.gameOver && !GameManager.gameIsPaused) //0 the left button
         {
             if(!GameManager.gameHasStarted)
             {
                 rb.gravityScale = 0.7f;
-                gameManager.GameHasStarted();
+                ghostAnimator.enabled = false; //disable montion of GhostParent while playing
+                getReadyAnimator.SetTrigger("FadeOut");
                 Flap();
-                armSpawner.InstantiateArm();
             }
             else
             {
@@ -49,6 +51,7 @@ public class GhostControl : MonoBehaviour
         }
         GhostRotation();
     }
+
 
     void GhostRotation()
     {
@@ -116,5 +119,11 @@ public class GhostControl : MonoBehaviour
     {
         rb.velocity = Vector2.zero; //disable gravity
         rb.velocity = new Vector2(rb.velocity.x, speed); //only move up/down
+    }
+
+    public void GetReadyAnimFinished()
+    {
+        gameManager.GameHasStarted();
+        armSpawner.InstantiateArm();
     }
 }
