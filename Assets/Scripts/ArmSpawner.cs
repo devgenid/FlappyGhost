@@ -14,13 +14,13 @@ public class ArmSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InstantiateArm();
+        //InstantiateArm(); Arms will appear after the game starts (in GhostControl)
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!GameManager.gameOver)
+        if(!GameManager.gameOver && GameManager.gameHasStarted)
         {
             timer += Time.deltaTime; //Difference of time between 2 carrets
             if(timer>=maxTime)
@@ -32,7 +32,7 @@ public class ArmSpawner : MonoBehaviour
 
     }
 
-    void InstantiateArm()
+    public void InstantiateArm()
     {
         randY = Random.Range(minY,maxY);
         GameObject newArm = Instantiate(arm); //Create a copy of a prefab
