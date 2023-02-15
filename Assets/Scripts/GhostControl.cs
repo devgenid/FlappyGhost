@@ -21,7 +21,8 @@ public class GhostControl : MonoBehaviour
 
     public ArmSpawner armSpawner;
 
-    public Animator ghostAnimator, getReadyAnimator;
+    public Animator ghostAnimator, getReadyAnimator, hitFX, cameraShake;
+    public AudioClip flap, point, hit, die;
 
     // Start is called before the first frame update
     void Start()
@@ -82,10 +83,14 @@ public class GhostControl : MonoBehaviour
     {
         if(collision.CompareTag("Arms"))
         {
+            gameManager.PlaySound(point);
             score.Scored();
         }
         else if(collision.CompareTag("SingleArm"))
         {
+            gameManager.PlaySound(hit);
+            cameraShake.SetTrigger("CameraFX");
+            hitFX.SetTrigger("HitFX");
             gameManager.GameOver();
 
         }
@@ -97,6 +102,9 @@ public class GhostControl : MonoBehaviour
         {
             if(!GameManager.gameOver)
             {
+                gameManager.PlaySound(hit);
+                cameraShake.SetTrigger("CameraFX");
+                hitFX.SetTrigger("HitFX");
                 gameManager.GameOver();
                 Gameover();
             }
@@ -109,6 +117,7 @@ public class GhostControl : MonoBehaviour
 
     void Gameover()
     {
+        gameManager.PlaySound(die);
         touchedGround = true;
         sp.sprite = ghostDied;
         anim.enabled = false;
@@ -117,6 +126,7 @@ public class GhostControl : MonoBehaviour
 
     void Flap()
     {
+        gameManager.PlaySound(flap);
         rb.velocity = Vector2.zero; //disable gravity
         rb.velocity = new Vector2(rb.velocity.x, speed); //only move up/down
     }

@@ -18,17 +18,11 @@ public class ScoreControl : MonoBehaviour
         score = 0;
         scoreText = GetComponent<TextMeshProUGUI>();
         scoreText.text = score.ToString();
-        panelScore.text = score.ToString();
+       // panelScore.text = score.ToString(); -> will be done from DrawScore with FX
 
         highscore = PlayerPrefs.GetInt("highscore"); //get the value from local save
         panelHighScore.text = highscore.ToString();
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void Scored()
@@ -44,5 +38,10 @@ public class ScoreControl : MonoBehaviour
             PlayerPrefs.SetInt("highscore", highscore); //local save in registry on Win or in xml file in Android device
             newImg.SetActive(true);
         }
+    }
+
+    public int GetScore() //will be used from other classes
+    {
+        return score;
     }
 }

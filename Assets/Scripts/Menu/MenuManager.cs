@@ -13,4 +13,9 @@ public class MenuManager : MonoBehaviour
         //SceneManager.LoadScene("Game"); //Name found in build settings
     }
 
+    public void OnRateBtn() {
+#if UNITY_ANDROID
+        Application.OpenURL("market://details?id=com.kpogames.flappyghost"); //com.company.game
+#endif
+    }
 }
